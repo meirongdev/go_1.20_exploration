@@ -1,3 +1,3 @@
 module github.com/meirongdev/go120expl
 
-go 1.19
+go 1.20
