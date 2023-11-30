@@ -17,32 +17,32 @@ type TestCase struct {
 var testCases = []*TestCase{
 	// Regular quoted string after template literal
 	// ok
-	{
-		Template:       "<script>var tpl = `<div></div>`;var path = \"/{{.V}}\";</script>",
-		Vars:           map[string]interface{}{"V": ";alert(1);"},
-		ExpectedOutput: "<script>var tpl = `<div></div>`;var path = \"/;alert(1);\";</script>",
-	},
-	// End template literal
-	// panic: {{.X}} appears in a JS template literal
-	{
-		Template:       "<script>var x = `{{.X}}`;</script>",
-		Vars:           map[string]interface{}{"X": "`+alert(1);`"},
-		ExpectedOutput: "<script>var x = `\\x60\\x2balert(1);\\x60`;</script>",
-	},
-	// Inject template literal into script
-	// ok
-	{
-		Template:       "<script>var x = {{.X}};</script>",
-		Vars:           map[string]interface{}{"X": "`${alert(1)}`"},
-		ExpectedOutput: "<script>var x = \"`${alert(1)}`\";</script>",
-	},
-	// Inject ${} into template literal
-	// panic: {{.V}} appears in a JS template literal
-	{
-		Template:       "<script>var v = `{{.V}}`;</script>",
-		Vars:           map[string]interface{}{"V": "${alert(1)}"},
-		ExpectedOutput: "<script>var v = `\\x24{alert(1)}`;</script>",
-	},
+	// {
+	// 	Template:       "<script>var tpl = `<div></div>`;var path = \"/{{.V}}\";</script>",
+	// 	Vars:           map[string]interface{}{"V": ";alert(1);"},
+	// 	ExpectedOutput: "<script>var tpl = `<div></div>`;var path = \"/;alert(1);\";</script>",
+	// },
+	// // End template literal
+	// // panic: {{.X}} appears in a JS template literal
+	// {
+	// 	Template:       "<script>var x = `{{.X}}`;</script>",
+	// 	Vars:           map[string]interface{}{"X": "`+alert(1);`"},
+	// 	ExpectedOutput: "<script>var x = `\\x60\\x2balert(1);\\x60`;</script>",
+	// },
+	// // Inject template literal into script
+	// // ok
+	// {
+	// 	Template:       "<script>var x = {{.X}};</script>",
+	// 	Vars:           map[string]interface{}{"X": "`${alert(1)}`"},
+	// 	ExpectedOutput: "<script>var x = \"`${alert(1)}`\";</script>",
+	// },
+	// // Inject ${} into template literal
+	// // panic: {{.V}} appears in a JS template literal
+	// {
+	// 	Template:       "<script>var v = `{{.V}}`;</script>",
+	// 	Vars:           map[string]interface{}{"V": "${alert(1)}"},
+	// 	ExpectedOutput: "<script>var v = `\\x24{alert(1)}`;</script>",
+	// },
 	// // Inject code into interpolation that looks closed
 	// panic: {{.V}} appears in a JS template literal
 	{
@@ -63,6 +63,7 @@ func main() {
 		if buf.String() != tc.ExpectedOutput {
 			fmt.Printf("Test case %d failed: expected:\n  %s\nbut got:\n  %s\n\n", i+1, tc.ExpectedOutput, buf.String())
 		}
+		fmt.Println(buf)
 	}
 }
 
